@@ -1,0 +1,8 @@
+-Entregarlo antes de la fecha de entrega.
+-NO COPIAR
+-No cambiar nombres de funciones de platillas
+-No entregar codigo que no funciona
+
+
+-Entregas en .zip con esta estructura de nombre:
+Apellido1_Nombre1_Apellido2_Nombre2.zip
