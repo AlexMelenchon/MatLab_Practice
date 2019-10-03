@@ -12,12 +12,10 @@ x=zeros(1,arraysize(2));
 
 x(end)=b(end)/A(end,end);%%last case
 
-for t=arraysize(1)-1:1
-    for j=t+1:-1:arraysize(2)
-        q=A(t,j)*x(j);
-    end
+for t=arraysize(1)-1:-1:1
     
-    x(t)=(b(t)-q)/A(t,t);
+    
+    x(t)=(b(t)-(A(t,t+1:arrraysize(2))*x(t+1:arraysize(2))))/A(t,t);
 end
 
 end
