@@ -12,6 +12,45 @@ function [flag, At, bt]= ownTriangulationPartialPivoting(A,b)
 %	At: Upper triangular matrix
 % 	bt: Modified independent term
 
+arraysize=size(A);
+r=zeros(arraysize(1),arraysize(2)+1);
+r(:,1:arraysize(2))=A;
+r(:,end)=b;
 
+
+
+
+
+
+for p=1:arraysize(1)
+    
+    for q=p:arraysize(1)
+        for z=p:(arraysize(1))-1
+        
+            if r(z,p)<r(z+1,p)
+                aux=r(z,:);
+                r(z,:)=r(z+1,:);
+                r(z+1,:)=aux;
+            end
+        
+        end
+    end
+    
+    
+    
+    for j=p+1:arraysize(1)
+    r(j,p:end)=r(p,p)*r(j,p:end)-r(j,p)*r(p,p:end);
+
+    end
+end
+
+
+
+
+
+
+    At=r(:,1:arraysize(2));
+    bt=r(:,end);
+    flag=1;
 
 end

@@ -7,10 +7,13 @@ b=[2,7,1,5]';
 
 c= backSubs(A,b);
 
-A=[ 2 3  1  1;
-    3 2 -1 -2;
-    4 -1 -5 1];
+A=[ 1 -2  1 ;
+ 2 -5 3; 
+ 5 1 7];
 
-b=[9,4,9]';
+b=[3,4,11]';
 
-[H,f]=ownTriangulation(A,b);
+%%[H,f]=ownTriangulation(A,b);
+[flag,H,f]=ownTriangulationPartialPivoting(A,b)
+
+
