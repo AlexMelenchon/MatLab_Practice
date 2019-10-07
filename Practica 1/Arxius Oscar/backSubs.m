@@ -8,17 +8,17 @@ function [x] = backSubs(A,b)
 % Outputs:
 %	x: Solution of A*x = b
 arraysize=size(A);
+
 x=zeros(arraysize(2),1);
 
 x(end)=b(end)/A(end,end);%%last case
 
 for t=arraysize(1)-1:-1:1
     
-    o=A(t,1+t:arraysize(1));
+    o=A(t,1+t:arraysize(1));%
     p=x(t+1:arraysize(1));
-    %x(t)=(b(t)-(A(t,t+1:arrraysize(2))*x(t+1:arraysize(2))))/A(t,t);
-    x(t)=(o.*p)/A(t,t);
-    %/A(t,t);
+    
+    x(t)=(b(t)-(o*p))/A(t,t);
 end
 
 end
