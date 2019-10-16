@@ -1,5 +1,8 @@
 function [x] = backSubs(A,b)
 
+
+                %BACKSUBS
+
 arraysize=size(A); %We save the array size to use it later
 
 

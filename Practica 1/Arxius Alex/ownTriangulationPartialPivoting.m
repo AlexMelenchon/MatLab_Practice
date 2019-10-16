@@ -6,10 +6,10 @@ function [flag, At, bt]= ownTriangulationPartialPivoting(A,b)
 
 %Create a new matrix, setting b as the Modified independent term of A
 arraysize=size(A);
-x=arraysize(1);
-y=arraysize(2);
-r=zeros(x,y+1);
-r(:,1:y)=A;
+rows=arraysize(1);
+col=arraysize(2);
+r=zeros(col,rows+1);
+r(:,1:col)=A;
 r(:,end)=b;
 %We initialitzate the flag at 0.
 flag=0; 
@@ -32,15 +32,17 @@ flag=0;
 
 %We check how many pivots will be avaliable for our code to use.
 % Ex. If the matrix is 5x3, we could use 3 pivots as max.
-if(x > y)
-    z = y;
+if(rows >= col)
+    z = col;
 else
-    z = z;
+    z = 0;
+    flag = 1;
 end
 
-%Loop as many times as the array rows.
+%Loop as many times as possible pivots or until we meet a conditions that
+%we know will result in a indeterminate or incompatible matrix.
+
 for p=1:z
-    
     
     %Bubble sort row order
     for t=p:1:z
@@ -61,7 +63,6 @@ for p=1:z
         break;
       end
 
-
 %Substitute the subpivot row for itself  multiplied for the pivot - the
 %pivot row multiplied for the subpivot.
     for j=p+1:z
@@ -70,18 +71,17 @@ for p=1:z
     
     %If a row is all 0 expect for the independent term, the system is
      %incompatible.
-     if(r(p,p) == 0 && r(p,y+1) ~= 0)
+     if(r(p,p) == 0 && r(p,col+1) ~= 0)
      flag = 1;
      break;
      end
-
 
 end
 %This process is done until we ran out of rows or columns to iterate with.
 
 
     %RETURNS
-    At=r(:,1:arraysize(2));
+    At=r(:,1:col);
     bt=r(:,end);
     flag;
 
