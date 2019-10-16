@@ -16,7 +16,7 @@ x=zeros(arraysize(2),1); %We create a column that will be used as the independan
 
 x(end)=b(end)/A(end,end);%Calculate the first unkown separatly
 
-%This loop iterates for the rest of rows that have unkowns.
+
 for t=arraysize(1)-1:-1:1
     
     o=A(t,1+t:arraysize(1));%%takes the matrix A and takes the vector row from pivot +1
@@ -26,3 +26,4 @@ for t=arraysize(1)-1:-1:1
 end
 
 end
+

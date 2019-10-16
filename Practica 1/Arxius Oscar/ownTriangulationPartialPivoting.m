@@ -18,10 +18,6 @@ r(:,1:arraysize(2))=A;
 r(:,end)=b;
 
 
-
-
-
-
 for p=1:arraysize(1)
     
     for q=p:arraysize(1)
@@ -45,12 +41,5 @@ for p=1:arraysize(1)
 end
 
 
-
-
-
-
-    At=r(:,1:arraysize(2));
-    bt=r(:,end);
-    flag=1;
 
 end

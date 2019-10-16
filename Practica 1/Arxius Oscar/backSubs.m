@@ -7,12 +7,16 @@ function [x] = backSubs(A,b)
 %	b: Independent term
 % Outputs:
 %	x: Solution of A*x = b
-arraysize=size(A);
 
-x=zeros(arraysize(2),1);
+arraysize=size(A); %We save the array size to use it later
 
-x(end)=b(end)/A(end,end);%%last case
 
+x=zeros(arraysize(2),1); %We create a column that will be used as the independant term
+
+
+x(end)=b(end)/A(end,end);%Calculate the first unkown separatly
+
+%This loop iterates for the rest of rows that have unkowns.
 for t=arraysize(1)-1:-1:1
     
     o=A(t,1+t:arraysize(1));%%takes the matrix A and takes the vector row from pivot +1
