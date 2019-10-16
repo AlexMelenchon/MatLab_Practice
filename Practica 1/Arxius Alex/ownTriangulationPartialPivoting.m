@@ -14,11 +14,15 @@ function [flag, At, bt]= ownTriangulationPartialPivoting(A,b)
 
 %Create a new matrix, setting b as the Modified independent term of A
 arraysize=size(A);
-r=zeros(arraysize(1),arraysize(2)+1);
-r(:,1:arraysize(2))=A;
+x=arraysize(1);
+y=arraysize(2);
+r=zeros(x,y+1);
+r(:,1:y)=A;
 r(:,end)=b;
 rank = 0;
 accumulator = 0;
+flag=0;
+
 
 %TRIANGULATION: Partial Pivoting
 
@@ -39,13 +43,13 @@ accumulator = 0;
 
 
 %Loop as many times as the array rows.
-for p=1:arraysize(1)
+for p=1:x
     
     %Bubble sort row order
-    for t=p:1:arraysize(1)
-    for v=p:1:arraysize(1) - p
+    for t=p:1:x
+    for v=p:1:x - p
         
-        if(r(v,p) < r(v+1,p))
+        if(abs(r(v,p)) < abs(r(v+1,p)))
             aux = r(v,p:end);
             r(v,p:end) = r(v+1,p:end);
             r(v+1,p:end) = aux;
@@ -62,14 +66,18 @@ for p=1:arraysize(1)
     end
     
     
-if(r(p,p)<= (1*10.^(-8)))
+if( p <= x && p <= y)
+    if(abs(r(p,p)) <= (1*10.^(-8)))
     flag = 1;
-end
-if(r(p,p) ~= 0)
+    break;
+    end
+    if(r(p,p) ~= 0)
     rank = rank +1;
+    end
 end
-    
 
+
+    
 
 end
 
@@ -77,11 +85,9 @@ end
 %This process is done until we ran out of rows or columns to iterate with.
 
 %We initialitzate the flag at 0.
-flag=0;
 %Check the array size of the new matrix
 amArraySize = size(r);
-x=arraysize(1);
-y=arraysize(2);
+
 
 if(rank < y)
     flag = 1;
@@ -90,28 +96,25 @@ end
 %First case: if the matrix has a highter number of columns(unknowns) than
 %rows, there's no way we can determine all the unknowns, so the matrix is
 %compatible indeterminate.
-if(y>x), flag=1 ;end
+
 
 for i=x:-1:1
     %We sum the dependant vectors and then we substract it from the number
     %of independant vectors; if the result is higher than the numbers of
     %unkowns, the system is compatible indeterminate.
-    if(r(i,:)==0)
-        accumulator = accumulator + 1;
-        if(x - accumulator == y)
-        flag=1;
-        end
-    end
+
      %If a row is all 0 expect for the independent term, the system is
      %incompatible.
-    if(r(i,amArraySize(2)-1)==0 && r(i,amArraySize(2))~=0)
+    if(r(i,y)==0 && r(i,y+1)~=0)
         flag=1;
     end
 end
+
+
     %We return the vars calculated.
     At=r(:,1:arraysize(2));
     bt=r(:,end);
-     flag;
+    flag;
 
 end
 

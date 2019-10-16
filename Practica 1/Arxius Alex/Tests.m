@@ -9,9 +9,10 @@
 A=[ 1 -2  1 ;
    5 1 7;
  2 -5 3;
- 0  0  0];
+ 0  0  0;
+ 0 0  0];
 
-b=[3,11,4, 21]';
+b=[3,11,4, 0,0]';
 
 [flag,At,Bt] = ownTriangulationPartialPivoting(A,b);
 
