@@ -8,6 +8,9 @@ function [yaw, pitch, roll] = rotM2eAngles(R)
 %	pitch: angle of rotation around the y axis
 %	roll: angle of rotation around the x axis
 
+
+
+
 end
 
 
