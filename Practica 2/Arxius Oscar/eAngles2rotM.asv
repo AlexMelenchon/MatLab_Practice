@@ -17,8 +17,6 @@ Rpitch = [cosd(pitch), 0 , -sind(pitch);
 Rroll = [1,0,0;
          0, cosd(roll), sind(roll);
          0, -sind(roll), cosd(roll)];
-     
-     R = Ryaw' * Rpitch' * Rroll';
 
 end
 
