@@ -11,15 +11,10 @@ function [yaw, pitch, roll] = rotM2eAngles(R)
 pitch = asind(-R(3,1));
 
 if(sind(pitch) == 1 || sind(pitch) == -1)
-  
-    roll = 0; 
-    
     if(sind(pitch) == 1)
-        yaw = ;
     end
-    if ()sind(pitch) == -1)
-        yaw = ;
-    end
+    if 
+    pitch = pitch * pi/ 180;
     
 end
 

@@ -13,7 +13,7 @@ Ryaw = [cosd(yaw),sind(yaw), 0;
         0, 0, 1];
 Rpitch = [cosd(pitch), 0 , -sind(pitch);
            0,1,0;
-            sind(pithch), 0, cosd(pitch)];
+            sind(pitch), 0, cosd(pitch)];
 Rroll = [1,0,0;
          0, cosd(roll), sind(roll);
          0, -sind(roll), cosd(roll)];
