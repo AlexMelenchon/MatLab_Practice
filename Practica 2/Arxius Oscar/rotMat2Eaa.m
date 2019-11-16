@@ -6,6 +6,7 @@ function [a,u] = rotMat2Eaa(R)
 % Outputs:
 %    a: angle of rotation in degrees
 %    u: axis of rotation 
+
 trace=R(1,1)+R(2,2)+R(3,3);
 a=acosd((trace-1)/2);
 
