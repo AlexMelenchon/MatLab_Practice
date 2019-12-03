@@ -155,6 +155,12 @@ posY0= str2num(get(handles.y_0_editable,'String'));
 x=zeros(1,102);
 y=zeros(1,102);
 
+t1=(-velocity*sind(angle)+sqrt((velocity*sind(angle))^2-4*-0.5*9.81*(0-posY0)))/(2*-0.5*9.81)
+t2=(-velocity*sind(angle)-sqrt((velocity*sind(angle))^2-4*-0.5*9.81*(0-posY0)))/(2*-0.5*9.81)
+
+t=max(t1,t2);
+timevec=linspace(0,t,0.1);
+
 for t=0:0.1:10
     
     x((t*10)+1)=posX0+velocity*t*cosd(angle);
