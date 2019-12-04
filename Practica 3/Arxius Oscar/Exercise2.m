@@ -146,29 +146,44 @@ function Calculate_button_Callback(hObject, eventdata, handles)
 % hObject    handle to Calculate_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
 angle=get(handles.angle_slider,'Value');
 velocity=get(handles.velocity_slider,'Value');
 posX0= str2num(get(handles.x_0_editable,'String'));
 posY0= str2num(get(handles.y_0_editable,'String'));
 
-x=zeros(1,102);
-y=zeros(1,102);
+abc=[-0.5*9.81,velocity*sind(angle),posY0];
+times=roots(abc);
+t=max(times);
 
-t1=(-velocity*sind(angle)+sqrt((velocity*sind(angle))^2-4*-0.5*9.81*(0-posY0)))/(2*-0.5*9.81)
-t2=(-velocity*sind(angle)-sqrt((velocity*sind(angle))^2-4*-0.5*9.81*(0-posY0)))/(2*-0.5*9.81)
 
-t=max(t1,t2);
-timevec=linspace(0,t,0.1);
+XMAX=posX0+velocity*cosd(angle)*t;
 
-for t=0:0.1:10
-    
-    x((t*10)+1)=posX0+velocity*t*cosd(angle);
-    y((t*10)+1)=posY0+velocity*t*sind(angle)-0.5*9.81*(t*t);
-    
+X=linspace(posX0,XMAX,200);
+Y=zeros(size(X));
+TinMaxY= (-velocity*sind(angle))/-9.81;
+YMax= posY0+ velocity*sind(angle)*TinMaxY-0.5*9.81*(TinMaxY*TinMaxY);
+[m,n]=size(X);
+
+formatSpec='%.2f m.';
+str=sprintf(formatSpec,XMAX);
+set(handles.range_text_value,'String',str);
+str=sprintf(formatSpec,YMax);
+set(handles.max_height_text_value,'String',str);
+
+
+for i=1:n
+actualtime=(X-posX0)/(velocity*cosd(angle));
+Y(i)=posY0+(velocity*sind(angle)*actualtime(i))-(0.5*9.81*(actualtime(i)*actualtime(i)));
 end
 
-plot (x,y);
+plot (X,Y);%%prints the line
+hold;
+plot(posX0+velocity*cosd(angle)*TinMaxY,YMax,'o');%%prints max point
+hold;
+axis([0 inf 0 35])%%sets the scale of the graphics
+xlabel('X[m]');
+ylabel('Y[m]');
+
 
 
 % --- If Enable == 'on', executes on mouse press in 5 pixel border.
@@ -177,3 +192,5 @@ function Calculate_button_ButtonDownFcn(hObject, eventdata, handles)
 % hObject    handle to Calculate_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
