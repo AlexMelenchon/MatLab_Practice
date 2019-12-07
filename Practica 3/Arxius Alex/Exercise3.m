@@ -22,7 +22,7 @@ function varargout = Exercise3(varargin)
 
 % Edit the above text to modify the response to help Exercise3
 
-% Last Modified by GUIDE v2.5 06-Dec-2019 17:50:26
+% Last Modified by GUIDE v2.5 07-Dec-2019 12:24:38
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -78,50 +78,73 @@ function angle_slider_Callback(hObject, eventdata, handles)
 % hObject    handle to angle_slider (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+%Get the angle & update it ------------------------------------------------
 angle=get(handles.angle_slider,'Value');
 set(handles.angle_text,'String',angle);
 
-v=[0;str2double(get(handles.v_1_num,'String'));str2double(get(handles.v_2_num,'String'));str2double(get(handles.v_3_num,'String'))]
+%Get & normalize v; then conversion to pure quaternion --------------------
+v=[str2double(get(handles.v_1_num,'String'));str2double(get(handles.v_2_num,'String'));str2double(get(handles.v_3_num,'String'))]
+
+v = v/sqrt(v'*v);
+
+v= [0; v];
 
 
+%We transform the direction of rotation to a unit quaternion using the
+%angle---------------------------------------------------------------------
 q0=cosd(angle);
 
 qV=[str2double(get(handles.u_1_num,'String'));str2double(get(handles.u_2_num,'String'));str2double(get(handles.u_3_num,'String'))]
 
-qV = qV.*sind(angle);
+qV = qV/sqrt(qV'*qV);
 
+qV = sind(angle).*qV;
+
+
+%We know that v' = q*v*qº, but this is equal to the  QL(q)*QR(qº), so
+%we're going to do that
+
+%First we declare & assenmble Q; using R(qº)-------------------------------
 Q = zeros(4);
-
 Q(1,1) = 1;
 
-
 R1 = [(q0^2 + qV(1)^2 -qV(2)^2 - qV(3)^2), 2*qV(1)*qV(2) - 2*q0*qV(3), 2*qV(1)* qV(3) + 2*q0*qV(2);];
-
-
 R2 = [ 2*qV(1)*qV(2) + 2*q0*qV(3),( q0^2 - qV(1)^2 +qV(2)^2 - qV(3)^2), 2*qV(2)*qV(3) - 2 *q0*qV(1)];
-
 R3 = [ 2*qV(1)*qV(3) - 2*q0*qV(2), 2*qV(2)*qV(3) + 2*q0*qV(1), q0^2-qV(1)^2-qV(2)^2 + qV(3)^2;];
-
-
 R = [R1; R2; R3];
-
 
 Q(2:4,2:4) = R;
 
-
+%We get the new vector rotated & we normalize it---------------------------
 w = Q*v;
 
-hold;
-plot3([0;w(1)],[0;0],[0;0],'Color',[1,0,0],'LineWidth',2)
+w(2:4) = w(2:4)/sqrt(w(2:4)'*w(2:4));
 
-hold;
-plot3([0;0],[0;w(2)],[0;0],'Color',[0,1,0],'LineWidth',2)
+%Vectors for an isometric triad--------------------------------------------
+b1 = [1,0,0];
+b2 = [0,1,0];
+b3 = [0,0,1];
 
-hold;
-plot3([0;0],[0;0],[0;w(3)],'Color',[0,0,1],'LineWidth',2)
+%Plots---------------------------------------------------------------------
 
-hold;
-plot3([0;v(2)],[0;v(3)],[0;v(4)],'Color',[1,0,1],'LineWidth',2)
+cla;
+hold ( 'all');
+
+%Plot the triad
+plot3([0;b1(1)],[0;b1(2)],[0;b1(3)],'Color',[1,0,0],'LineWidth',2)
+
+plot3([0;b2(1)],[0;b2(2)],[0;b2(3)],'Color',[0,1,0],'LineWidth',2)
+
+plot3([0;b3(1)],[0;b3(2)],[0;b3(3)],'Color',[0,0,1],'LineWidth',2)
+
+%Plot the rotated vector
+plot3([0;w(2)],[0;w(3)],[0;w(4)],'Color',[1,1,0],'LineWidth',2)
+
+
+
+
+
 
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider

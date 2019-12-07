@@ -104,6 +104,8 @@ function velocity_slider_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+%Update the speed----------------------------------------------------------
 velocity=get(handles.velocity_slider,'Value');
 set(handles.velocity_text_value,'String',velocity);
 
@@ -124,8 +126,11 @@ function angle_slider_Callback(hObject, eventdata, handles)
 % hObject    handle to angle_slider (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+%Update the angle---------------------------------------------------------
 angle=get(handles.angle_slider,'Value');
 set(handles.angle_text_value,'String',angle);
+
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 
@@ -146,36 +151,42 @@ function Calculate_button_Callback(hObject, eventdata, handles)
 % hObject    handle to Calculate_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+%Get the variables---------------------------------------------------------
 angle=get(handles.angle_slider,'Value');
 velocity=get(handles.velocity_slider,'Value');
 posX0= str2num(get(handles.x_0_editable,'String'));
 posY0= str2num(get(handles.y_0_editable,'String'));
 
+%Get the max time----------------------------------------------------------
 abc=[-0.5*9.81,velocity*sind(angle),posY0];
 times=roots(abc);
 t=max(times);
 
-
+%The maximum x-------------------------------------------------------------
 XMAX=posX0+velocity*cosd(angle)*t;
 
+%The maximum Y------------------------------------------------------------
 X=linspace(posX0,XMAX,200);
 Y=zeros(size(X));
 TinMaxY= (-velocity*sind(angle))/-9.81;
 YMax= posY0+ velocity*sind(angle)*TinMaxY-0.5*9.81*(TinMaxY*TinMaxY);
 [m,n]=size(X);
 
+%Set the maximum Y & X into the UI-------------------------------------------
 formatSpec='%.2f m.';
 str=sprintf(formatSpec,XMAX);
 set(handles.range_text_value,'String',str);
 str=sprintf(formatSpec,YMax);
 set(handles.max_height_text_value,'String',str);
 
-
+%The parable---------------------------------------------------------------
 for i=1:n
 actualtime=(X-posX0)/(velocity*cosd(angle));
 Y(i)=posY0+(velocity*sind(angle)*actualtime(i))-(0.5*9.81*(actualtime(i)*actualtime(i)));
 end
 
+%Plots---------------------------------------------------------------------
 plot (X,Y);%%prints the line
 hold;
 plot(posX0+velocity*cosd(angle)*TinMaxY,YMax,'o');%%prints max point
